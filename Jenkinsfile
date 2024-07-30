@@ -9,7 +9,7 @@ pipeline {
                 }
             }
         }
-        
+
         stage('Test') {
             steps {
                 script {
@@ -17,7 +17,7 @@ pipeline {
                 }
             }
         }
-        
+
         stage('Build Docker Image') {
             steps {
                 script {
@@ -25,7 +25,7 @@ pipeline {
                 }
             }
         }
-        
+
         stage('Deploy') {
             steps {
                 script {
@@ -34,4 +34,9 @@ pipeline {
             }
         }
     }
+
+    triggers {
+        pollSCM('H/5 * * * *')
+    }
 }
+
