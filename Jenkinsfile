@@ -4,7 +4,17 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/faisalnuriman/springboot-testing-jenkins-.git'
+                checkout([
+                    $class: 'GitSCM', 
+                    branches: [[name: '*/main']], 
+                    doGenerateSubmoduleConfigurations: false, 
+                    extensions: [], 
+                    submoduleCfg: [], 
+                    userRemoteConfigs: [[
+                        url: 'https://github.com/faisalnuriman/springboot-testing-jenkins-.git',
+                        credentialsId: 'github-faisalnuriman'
+                    ]]
+                ])
             }
         }
         stage('Build') {
@@ -14,3 +24,4 @@ pipeline {
         }
     }
 }
+
