@@ -6,7 +6,7 @@ pipeline {
     }
 
     environment {
-        SLACK_CHANNEL = 'jenkins'
+        SLACK_CHANNEL = 'C07EL1L7HAT'
         SLACK_CREDENTIAL_ID = 'slack-webhook-url'
     }
 
