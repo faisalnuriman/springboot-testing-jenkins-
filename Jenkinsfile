@@ -33,34 +33,16 @@ pipeline {
         }
     }
     
-    post {
-        success {
-            slackSend (
-                channel: "${env.SLACK_CHANNEL}", 
-                color: 'good', 
-                message: "Build succeeded in ${env.JOB_NAME} #${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
-            )
-        }
-        failure {
-            slackSend (
-                channel: "${env.SLACK_CHANNEL}", 
-                color: 'danger', 
-                message: "Build failed in ${env.JOB_NAME} #${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
-            )
-        }
-        unstable {
-            slackSend (
-                channel: "${env.SLACK_CHANNEL}", 
-                color: 'warning', 
-                message: "Build is unstable in ${env.JOB_NAME} #${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
-            )
-        }
-        always {
-            slackSend (
-                channel: "${env.SLACK_CHANNEL}", 
-                color: '#FFFF00', 
-                message: "Build completed in ${env.JOB_NAME} #${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
-            )
+    stages {
+        stage('Slack Notification') {
+            steps {
+                slackSend(
+                    channel: "${env.SLACK_CHANNEL}",
+                    color: '#FFFF00',
+                    tokenCredentialId: "${env.SLACK_CREDENTIAL_ID}",
+                    message: 'Test notification'
+                )
+            }
         }
     }
 }
