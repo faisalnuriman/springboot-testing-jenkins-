@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        SLACK_CHANNEL = 'C07EL1L7HAT'
+        SLACK_CHANNEL = '#C07EL1L7HAT'
         SLACK_CREDENTIAL_ID = 'slack-webhook-url'
     }
 
@@ -33,26 +33,27 @@ pipeline {
         }
     }
 
-post {
-    success {
-        slackSend(
-            channel: '#C07EL1L7HAT',
-            message: "Pipeline sukses: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-            tokenCredentialId: 'slack-webhook-url'
-        )
-    }
-    failure {
-        slackSend(
-            channel: '#C07EL1L7HAT',
-            message: "Pipeline gagal: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-            tokenCredentialId: 'slack-webhook-url'
-        )
-    }
-    unstable {
-        slackSend(
-            channel: '#C07EL1L7HAT',
-            message: "Pipeline tidak stabil: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-            tokenCredentialId: 'slack-webhook-url'
-        )
+    post {
+        success {
+            slackSend(
+                channel: env.SLACK_CHANNEL,
+                message: "Pipeline sukses: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                tokenCredentialId: env.SLACK_CREDENTIAL_ID
+            )
+        }
+        failure {
+            slackSend(
+                channel: env.SLACK_CHANNEL,
+                message: "Pipeline gagal: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                tokenCredentialId: env.SLACK_CREDENTIAL_ID
+            )
+        }
+        unstable {
+            slackSend(
+                channel: env.SLACK_CHANNEL,
+                message: "Pipeline tidak stabil: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                tokenCredentialId: env.SLACK_CREDENTIAL_ID
+            )
+        }
     }
 }
