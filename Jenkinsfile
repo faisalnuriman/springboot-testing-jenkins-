@@ -5,6 +5,11 @@ pipeline {
         pollSCM('H/5 * * * *')
     }
 
+    environment {
+        SLACK_CHANNEL = 'C07EL1L7HAT'
+        SLACK_CREDENTIAL_ID = 'slack-webhook-url'
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -27,5 +32,35 @@ pipeline {
             }
         }
     }
+    
+    post {
+        success {
+            slackSend (
+                channel: "${env.SLACK_CHANNEL}", 
+                color: 'good', 
+                message: "Build succeeded in ${env.JOB_NAME} #${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
+            )
+        }
+        failure {
+            slackSend (
+                channel: "${env.SLACK_CHANNEL}", 
+                color: 'danger', 
+                message: "Build failed in ${env.JOB_NAME} #${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
+            )
+        }
+        unstable {
+            slackSend (
+                channel: "${env.SLACK_CHANNEL}", 
+                color: 'warning', 
+                message: "Build is unstable in ${env.JOB_NAME} #${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
+            )
+        }
+        always {
+            slackSend (
+                channel: "${env.SLACK_CHANNEL}", 
+                color: '#FFFF00', 
+                message: "Build completed in ${env.JOB_NAME} #${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
+            )
+        }
+    }
 }
-
