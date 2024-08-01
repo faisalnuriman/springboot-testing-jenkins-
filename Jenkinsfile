@@ -6,7 +6,7 @@ pipeline {
     }
 
     environment {
-        SLACK_CHANNEL = 'C07EU2JAL4W'
+        SLACK_CHANNEL = 'C07EL1L7HAT'
         SLACK_CREDENTIAL_ID = 'slack-webhook-url'
     }
 
