@@ -28,7 +28,7 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh './mvnw clean install'
+                sh 'exit 1'
             }
         }
     }
