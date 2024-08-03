@@ -37,7 +37,7 @@ pipeline {
                     VERSION = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
                     sh 'docker build -t faisalnuriman/springboot:' + VERSION + ' -f Dockerfile .'
                 }
-            }sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
+            }
         }
         stage('Run Docker Containers') {
             steps {
@@ -55,21 +55,21 @@ pipeline {
         success {
             slackSend(
                 channel: env.SLACK_CHANNEL,
-                message: "Pipeline sukses: ${env.JOB_NAME} #${env.BUILD_NUMBER} ${VERSION} . Semua containers berjalan dengan port: 8081 (latest), 8082 (v1), 8083 (v2)",
+                message: "Pipeline sukses: ${env.JOB_NAME} #${env.BUILD_NUMBER} dengan version = ${VERSION}",
                 tokenCredentialId: env.SLACK_CREDENTIAL_ID
             )
         }
         failure {
             slackSend(
                 channel: env.SLACK_CHANNEL,
-                message: "Pipeline gagal: ${env.JOB_NAME} #${env.BUILD_NUMBER} ${VERSION}",
+                message: "Pipeline gagal: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
                 tokenCredentialId: env.SLACK_CREDENTIAL_ID
             )
         }
         unstable {
             slackSend(
                 channel: env.SLACK_CHANNEL,
-                message: "Pipeline tidak stabil: ${env.JOB_NAME} #${env.BUILD_NUMBER} ${VERSION}",
+                message: "Pipeline tidak stabil: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
                 tokenCredentialId: env.SLACK_CREDENTIAL_ID
             )
         }
