@@ -34,9 +34,8 @@ pipeline {
         stage('Build Docker Images') {
             steps {
                 script {
-                    sh 'docker build -t faisalnuriman/springboot:latest -f Dockerfile .'
-                    sh 'docker build -t faisalnuriman/springbootv1:latest -f Dockerfile.v1 .'
-                    sh 'docker build -t faisalnuriman/springbootv2:latest -f Dockerfile.v2 .'
+                    VERSION = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
+                    sh 'docker build -t faisalnuriman/springboot:' + VERSION + ' -f Dockerfile .'
                 }
             }
         }
@@ -45,16 +44,8 @@ pipeline {
                 script {
                     sh 'docker stop my-springboot-container || true'
                     sh 'docker rm my-springboot-container || true'
-
-                    sh 'docker stop springbootv1 || true'
-                    sh 'docker rm springbootv1 || true'
-
-                    sh 'docker stop springbootv2 || true'
-                    sh 'docker rm springbootv2 || true'
-
-                    sh 'docker run -d --name my-springboot-container -p 8081:8080 faisalnuriman/springboot:latest'
-                    sh 'docker run -d --name springbootv1 -p 8082:8080 faisalnuriman/springbootv1:latest'
-                    sh 'docker run -d --name springbootv2 -p 8083:8080 faisalnuriman/springbootv2:latest'
+                    
+                    sh 'docker run -d --name my-springboot-container -p 8081:8080 faisalnuriman/springboot:' + VERSION
                 }
             }
         }
