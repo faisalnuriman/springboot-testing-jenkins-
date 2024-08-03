@@ -36,6 +36,7 @@ pipeline {
                 script {
                     VERSION = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
                     sh 'docker build -t faisalnuriman/springboot:' + VERSION + ' -f Dockerfile .'
+                    sh 'docker push faisalnuriman/springboot:' + VERSION
                 }
             }
         }
